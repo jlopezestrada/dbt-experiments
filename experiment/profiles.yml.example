@@ -1,0 +1,7 @@
+experiment:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: 'experiment.duckdb'
+      threads: 4
