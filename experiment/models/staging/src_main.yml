@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: main
+    description: Raw data from our seed files.
+    tables:
+      - name: raw_customers
+        description: A list of customers who have signed up.
+      - name: raw_orders
+        description: A list of orders placed by customers.

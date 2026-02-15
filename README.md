@@ -18,13 +18,16 @@ The primary dbt project is located in the `experiment/` directory:
 ```text
 experiment/
 ├── models/         # SQL models
-├── seeds/          # Raw CSV data files
+├── seeds/          # Raw CSV data files (Sample data only)
 ├── macros/         # Reusable Jinja logic
 ├── tests/          # Custom data quality tests
 ├── target/         # Compiled SQL and artifacts
 ├── profiles.yml    # Connection configuration for DuckDB
 └── dbt_project.yml # Project-level configuration
 ```
+
+> [!IMPORTANT]
+> **Data Privacy Note:** The CSV files in `experiment/seeds/` are generated sample data for experimentation purposes. In a production environment, real data or PII (Personally Identifiable Information) should **never** be tracked in Git. Use dbt seeds only for small, static lookup tables and ensure sensitive data is handled via secure data sources and excluded via `.gitignore`.
 
 ## Getting Started
 
