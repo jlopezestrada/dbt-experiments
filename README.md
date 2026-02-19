@@ -1,6 +1,6 @@
 # dbt Experiments Sandbox
 
-This repository serves as a dedicated environment for exploring and implementing data transformation patterns using dbt (data build tool). The project is architected for local development.
+This repository serves as a dedicated environment for exploring and implementing data transformation patterns using dbt (data build tool). The project is architected for local development using a modern, serverless data stack.
 
 ## Architecture and Technology Stack
 
@@ -13,21 +13,15 @@ The project utilizes a serverless data stack designed for local execution:
 
 ## Project Structure
 
-The primary dbt project is located in the `experiment/` directory:
-
 ```text
-experiment/
-├── models/         # SQL models
-├── seeds/          # Raw CSV data files (Sample data only)
-├── macros/         # Reusable Jinja logic
-├── tests/          # Custom data quality tests
-├── target/         # Compiled SQL and artifacts
-├── profiles.yml    # Connection configuration for DuckDB
-└── dbt_project.yml # Project-level configuration
+.
+├── experiment/         # The primary dbt project directory
+├── venv/               # Python virtual environment (local only)
+├── requirements.txt    # Project dependencies
+└── README.md           # Project overview
 ```
 
-> [!IMPORTANT]
-> **Data Privacy Note:** The CSV files in `experiment/seeds/` are generated sample data for experimentation purposes. In a production environment, real data or PII (Personally Identifiable Information) should **never** be tracked in Git. Use dbt seeds only for small, static lookup tables and ensure sensitive data is handled via secure data sources and excluded via `.gitignore`.
+Detailed documentation for the dbt models and workflow can be found in the [experiment/ directory](./experiment/README.md).
 
 ## Getting Started
 
@@ -39,46 +33,30 @@ experiment/
 ### Installation and Setup
 
 1.  **Initialize the Environment:**
+    Execute these commands from the project root:
     ```bash
     python3 -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
     ```
 
-2.  **Verify the Connection:**
-    Navigate to the project directory and test the dbt profile:
+2.  **Navigate to the dbt Project:**
+    All dbt operations should be performed within the `experiment` directory:
     ```bash
     cd experiment
-    dbt debug --profiles-dir .
     ```
 
-## Development Workflow
-
-### Executing Transformations
-
-To compile and execute the dbt models against the DuckDB database:
-```bash
-dbt run --profiles-dir .
-```
-
-### Data Quality Assurance
-
-To execute the defined schema and data tests:
-```bash
-dbt test --profiles-dir .
-```
+## External Tools
 
 ### Database Inspection
 
-To interactively query the DuckDB database and inspect the results of your models, use the Harlequin IDE:
+To interactively query the DuckDB database and inspect the results of your models, use the Harlequin IDE from the project root (after running dbt models):
 ```bash
-harlequin experiment.duckdb
+harlequin experiment/experiment.duckdb
 ```
 
 ### Documentation
 
-To generate and serve the project documentation and lineage graph:
-```bash
-dbt docs generate --profiles-dir .
-dbt docs serve --profiles-dir .
-```
+To view the interactive documentation and lineage graph:
+1. Generate the docs: `cd experiment && dbt docs generate`
+2. Serve the docs: `dbt docs serve`

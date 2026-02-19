@@ -1,67 +1,54 @@
-# dbt Experimental Environment
+# dbt Experimental Project
 
-This repository serves as a sandbox for the research and development of dbt (data build tool) transformation patterns. The environment utilizes DuckDB as a high-performance, local analytical engine, enabling rapid experimentation without the overhead of a cloud-based data warehouse.
+This directory contains the primary dbt project. It is configured to use **DuckDB** as a local analytical engine.
 
-## Setup and Configuration
+## dbt Configuration
 
-### 1. Environment Initialization
-Before proceeding, ensure that a Python virtual environment is active and all necessary dependencies are installed from the project root:
-
-```bash
-# Execute from the project root
-python -m venv venv
-source venv/bin/activate  # Or venv\Scripts\activate on Windows
-pip install -r requirements.txt
-```
-
-### 2. Profile Configuration
-dbt requires a connection profile to interface with the local database. A template is provided within this directory for initialization:
+### Profile Setup
+Before running dbt commands, ensure you have a `profiles.yml` file in this directory:
 
 ```bash
 cp profiles.yml.example profiles.yml
 ```
 
-The default configuration is optimized for local development, persisting data to a local `experiment.duckdb` file.
-
-## Development Lifecycle
-
-To execute the standard data transformation pipeline, follow the sequence below:
-
-### Data Ingestion (Seeding)
-Populate the local database with raw source data defined in the `seeds/` directory:
-```bash
-dbt seed
-```
-
-### Model Transformation
-Execute the SQL models to apply transformations and build the defined datasets:
-```bash
-dbt run
-```
-
-### Quality Assurance
-Validate data integrity and transformation logic by executing the project's test suite:
-```bash
-dbt test
-```
+The configuration is set to persist data in a local `experiment.duckdb` file within this directory.
 
 ## Project Architecture
 
 The project follows a modular design pattern to ensure scalability and clarity:
 
-- **Seeds**: Located in `seeds/`, these files represent static raw data inputs used for prototyping and testing.
-- **Staging Layer**: Residing in `models/staging/`, these models are responsible for the initial cleaning, normalization, and standardization of raw source data.
-- **Source Specifications**: `models/staging/src_main.yml` defines the upstream source properties and enforces foundational data quality constraints such as uniqueness and non-nullity.
-- **Macros and Tests**: Placeholder directories are provided for reusable SQL logic and custom validation scripts respectively.
+- **Seeds**: Located in `seeds/`, these files represent static raw data inputs used for prototyping.
+- **Staging Layer**: Residing in `models/staging/`, these models are responsible for the initial cleaning and normalization of raw source data.
+- **Source Specifications**: `models/staging/src_main.yml` defines the upstream source properties.
+- **Generic Tests**: Defined in `models/staging/schema.yml` to enforce data integrity (uniqueness, null checks).
+- **Singular Tests**: Custom SQL validation scripts located in `tests/`.
 
-## Administrative Commands
+## Development Lifecycle
 
-- **Compilation**: Use `dbt compile` to inspect the generated SQL without executing it against the database.
-- **Documentation**: Execute `dbt docs generate && dbt docs serve` to produce and view the interactive documentation and lineage graph.
-- **Cleanup**: Use `dbt clean` to remove build artifacts and transient files.
+Run these commands from within the `experiment/` directory:
 
-## References
+### 1. Data Ingestion
+Populate the local database with raw source data:
+```bash
+dbt seed
+```
 
-- [Official dbt Documentation](https://docs.getdbt.com/)
-- [dbt-duckdb Adapter Specification](https://github.com/jwills/dbt-duckdb)
-- [dbt Project Structuring Best Practices](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview)
+### 2. Model Transformation
+Execute the SQL models to apply transformations:
+```bash
+dbt run
+```
+
+### 3. Quality Assurance
+Validate data integrity by executing the project's test suite:
+```bash
+dbt test
+```
+
+### 4. Utility Commands
+- **Compile**: `dbt compile` to inspect generated SQL.
+- **Debug**: `dbt debug` to verify the connection.
+- **Clean**: `dbt clean` to remove build artifacts.
+
+> [!IMPORTANT]
+> **Data Privacy Note:** The CSV files in `seeds/` are sample data. Real PII should **never** be tracked in Git.
