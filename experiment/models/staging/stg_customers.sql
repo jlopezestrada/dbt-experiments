@@ -8,7 +8,8 @@ renamed as (
         first_name,
         last_name,
         email,
-        signup_date
+        signup_date,
+        {{ insert_audit_columns() }}
     from source
 )
 
